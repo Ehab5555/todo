@@ -12,7 +12,7 @@ class DefaultTextFormField extends StatelessWidget {
     required this.hintText,
     required this.controller,
     required this.onChanged,
-    required this.validator,
+    this.validator,
     this.maxLines = 1,
   });
 

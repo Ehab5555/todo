@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/app_theme.dart';
+import 'package:todo/firebase_functions.dart';
+import 'package:todo/models/task_model.dart';
+import 'package:todo/tasks/tasks_provider.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
 import 'package:todo/widgets/default_text_form_field.dart';
 
@@ -113,13 +119,47 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     );
   }
 
-  void addTask() {
+  void addTask() async {
     if (formKey.currentState!.validate()) {
-      setState(() {
-        titleController.clear();
-        descriptionController.clear();
-        date = DateTime.now();
-      });
+      FirebaseFunctions.addTaskToFirestore(
+        TaskModel(
+          title: titleController.text,
+          description: descriptionController.text,
+          dateTime: date,
+        ),
+      ).then(
+        (_) {
+          titleController.clear();
+          descriptionController.clear();
+          date = DateTime.now();
+          Navigator.pop(context);
+          Provider.of<TasksProvider>(
+            context,
+            listen: false,
+          ).getTasks();
+          Fluttertoast.showToast(
+            msg: "Task added successfully",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 5,
+            backgroundColor: AppTheme.green,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        },
+      ).catchError(
+        (error) {
+          Fluttertoast.showToast(
+            msg: 'Something went wrong',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        },
+      );
     }
   }
 }
