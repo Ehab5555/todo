@@ -17,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: const TaskTab(),
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
         notchMargin: 10,
