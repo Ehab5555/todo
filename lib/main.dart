@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/login_screen.dart';
+import 'package:todo/auth/register_screen.dart';
 import 'package:todo/home_screen.dart';
-import 'package:todo/tasks/edit_task.dart';
-import 'package:todo/tasks/tasks_provider.dart';
+import 'package:todo/tabs/tasks/edit_task.dart';
+import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,8 +30,10 @@ class Todo extends StatelessWidget {
       routes: {
         HomeScreen.routeName: (_) => const HomeScreen(),
         EditTask.routeName: (_) => const EditTask(),
+        RegisterScreen.routeName: (_) => const RegisterScreen(),
+        LoginScreen.routeName: (_) => const LoginScreen(),
       },
-      initialRoute: HomeScreen.routeName,
+      initialRoute: RegisterScreen.routeName,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
