@@ -1,3 +1,20 @@
 {
-  "todoList": "قائمة المهام"
+  "todoList": "قائمة المهام",
+  "settings": "الاعدادات",
+  "language": "اللغة",
+  "theme": "الوضع",
+  "light": "فاتح",
+  "dark": "داكن",
+  "logout": "تسجيل خروج",
+  "add_task": "اضافة مهمة",
+  "enter_task_title": "ادخل عنوان المهمة",
+  "enter_task_desc": "ادخل وصف المهمة",
+  "selected_date": "التاريخ المحدد",
+  "edit_task": "تعديل المهمة",
+  "login": "تسجيل دخول",
+  "name": "الاسم",
+  "email": "الايميل",
+  "password": "كلمة المرور",
+  "register": "انشاء حساب",
+  "dont_have": "ليس لدي حساب ؟"
 }

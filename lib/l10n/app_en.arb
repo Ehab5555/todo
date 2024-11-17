@@ -1,3 +1,20 @@
 {
-  "todoList": "TodoList"
+  "todoList": "TodoList",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "logout": "Logout",
+  "add_task": "Add Task",
+  "enter_task_title": "Enter Task Title",
+  "enter_task_desc": "Enter Task Description",
+  "selected_date": "Selected Date",
+  "edit_task": "Edit Task",
+  "login": "Login",
+  "name": "Name",
+  "email": "Email",
+  "password": "Password",
+  "register": "Register",
+  "dont_have": "Don't have an Account ?"
 }

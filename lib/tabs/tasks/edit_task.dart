@@ -6,8 +6,10 @@ import 'package:todo/app_theme.dart';
 import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/tabs/settings/settings_provider.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
 import 'package:todo/widgets/default_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditTask extends StatefulWidget {
   static const String routeName = 'edit_task';
@@ -27,7 +29,7 @@ class _EditTaskState extends State<EditTask> {
     TextTheme textTheme = Theme.of(context).textTheme;
     TaskModel task = ModalRoute.of(context)!.settings.arguments as TaskModel;
     final userId = Provider.of<UserProvider>(context).currentUser!.id;
-
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       body: Column(
         children: [
@@ -59,7 +61,7 @@ class _EditTaskState extends State<EditTask> {
                         width: 16,
                       ),
                       Text(
-                        'ToDo List',
+                        appLocalizations.todoList,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               color: AppTheme.white,
                             ),
@@ -75,7 +77,9 @@ class _EditTaskState extends State<EditTask> {
                     padding: const EdgeInsets.all(20),
                     width: screenHeight * 0.9,
                     decoration: BoxDecoration(
-                      color: AppTheme.white,
+                      color: Provider.of<SettingsProvider>(context).isDark
+                          ? AppTheme.eerieBlack
+                          : AppTheme.white,
                       borderRadius: BorderRadius.circular(
                         10,
                       ),
@@ -83,14 +87,14 @@ class _EditTaskState extends State<EditTask> {
                     child: Column(
                       children: [
                         Text(
-                          'Edit Task',
+                          appLocalizations.edit_task,
                           style: textTheme.titleLarge,
                         ),
                         const SizedBox(
                           height: 64,
                         ),
                         DefaultTextFormField(
-                          hintText: 'Enter Task Title',
+                          hintText: appLocalizations.enter_task_title,
                           controller: TextEditingController(
                             text: task.title,
                           ),
@@ -108,7 +112,7 @@ class _EditTaskState extends State<EditTask> {
                           height: 32,
                         ),
                         DefaultTextFormField(
-                          hintText: 'Enter Task Description',
+                          hintText: appLocalizations.enter_task_desc,
                           controller: TextEditingController(
                             text: task.description,
                           ),
@@ -127,7 +131,7 @@ class _EditTaskState extends State<EditTask> {
                           height: 32,
                         ),
                         Text(
-                          'Selected Date',
+                          appLocalizations.selected_date,
                           style: textTheme.titleMedium,
                         ),
                         const SizedBox(
@@ -165,7 +169,7 @@ class _EditTaskState extends State<EditTask> {
                           height: 64,
                         ),
                         DefaultElevatedButton(
-                          text: 'Add Task',
+                          text: appLocalizations.edit_task,
                           onPressed: () {
                             FirebaseFunctions.updateTaskInFirestore(
                               taskModel: task,

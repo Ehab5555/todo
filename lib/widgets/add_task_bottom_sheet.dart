@@ -6,9 +6,11 @@ import 'package:todo/app_theme.dart';
 import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/tabs/settings/settings_provider.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
 import 'package:todo/widgets/default_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
   const AddTaskBottomSheet({super.key});
@@ -26,6 +28,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.viewInsetsOf(context).bottom,
@@ -33,19 +37,20 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
       child: Container(
         height: MediaQuery.sizeOf(context).height * 0.5,
         padding: const EdgeInsets.all(20),
+        color: settingsProvider.isDark ? AppTheme.eerieBlack : AppTheme.white,
         child: Form(
           key: formKey,
           child: Column(
             children: [
               Text(
-                'Add Task',
+                appLocalizations.add_task,
                 style: textTheme.titleLarge,
               ),
               const SizedBox(
                 height: 32,
               ),
               DefaultTextFormField(
-                hintText: 'Enter Task Title',
+                hintText: appLocalizations.enter_task_title,
                 controller: titleController,
                 onChanged: (value) {
                   titleController.text = value;
@@ -61,7 +66,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 height: 16,
               ),
               DefaultTextFormField(
-                hintText: 'Enter Task Description',
+                hintText: appLocalizations.enter_task_desc,
                 controller: descriptionController,
                 onChanged: (value) {
                   descriptionController.text = value;
@@ -75,10 +80,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 maxLines: 2,
               ),
               const SizedBox(
-                height: 32,
+                height: 16,
               ),
               Text(
-                'Selected Date',
+                appLocalizations.selected_date,
                 style: textTheme.titleMedium,
               ),
               const SizedBox(
@@ -116,7 +121,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                 height: 32,
               ),
               DefaultElevatedButton(
-                text: 'Add Task',
+                text: appLocalizations.add_task,
                 onPressed: addTask,
               ),
             ],

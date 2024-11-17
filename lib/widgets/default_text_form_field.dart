@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/tabs/settings/settings_provider.dart';
 
 class DefaultTextFormField extends StatefulWidget {
   final String hintText;
@@ -27,6 +29,11 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: TextStyle(
+        color: Provider.of<SettingsProvider>(context).isDark
+            ? AppTheme.white
+            : AppTheme.black,
+      ),
       decoration: InputDecoration(
         border: const OutlineInputBorder(
           borderSide: BorderSide(

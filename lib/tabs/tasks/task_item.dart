@@ -6,6 +6,7 @@ import 'package:todo/app_theme.dart';
 import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/tabs/settings/settings_provider.dart';
 import 'package:todo/tabs/tasks/edit_task.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 
@@ -30,6 +31,7 @@ class _TaskItemState extends State<TaskItem> {
         Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     TextTheme textTheme = Theme.of(context).textTheme;
     Provider.of<TasksProvider>(context).getTasks(userId);
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     return Container(
       margin: const EdgeInsets.all(10),
       child: Slidable(
@@ -73,6 +75,7 @@ class _TaskItemState extends State<TaskItem> {
           ],
         ),
         child: Card(
+          color: settingsProvider.isDark ? AppTheme.eerieBlack : AppTheme.white,
           child: ListTile(
             onTap: () {
               Navigator.pushNamed(context, EditTask.routeName,

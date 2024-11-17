@@ -9,6 +9,7 @@ import 'package:todo/firebase_functions.dart';
 import 'package:todo/home_screen.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
 import 'package:todo/widgets/default_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = 'login_screen';
@@ -25,10 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Login',
+          appLocalizations.login,
           style: textTheme.titleLarge,
         ),
       ),
@@ -40,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               DefaultTextFormField(
-                hintText: 'Email',
+                hintText: appLocalizations.email,
                 controller: emailController,
                 onChanged: (value) {},
                 validator: (value) {
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 16,
               ),
               DefaultTextFormField(
-                hintText: 'Password',
+                hintText: appLocalizations.password,
                 controller: passwordController,
                 onChanged: (value) {},
                 validator: (value) {
@@ -73,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 32,
               ),
               DefaultElevatedButton(
-                text: 'Login',
+                text: appLocalizations.login,
                 onPressed: login,
               ),
               const SizedBox(
@@ -85,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       context, RegisterScreen.routeName);
                 },
                 child: Text(
-                  "Don't have an Account?",
+                  appLocalizations.dont_have,
                   style: textTheme.titleMedium?.copyWith(
                     color: AppTheme.primaryColor,
                   ),

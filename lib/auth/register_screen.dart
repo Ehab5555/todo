@@ -9,6 +9,7 @@ import 'package:todo/firebase_functions.dart';
 import 'package:todo/home_screen.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
 import 'package:todo/widgets/default_text_form_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register';
@@ -27,10 +28,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
+    AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Register',
+          appLocalizations.register,
           style: textTheme.titleLarge,
         ),
       ),
@@ -42,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               DefaultTextFormField(
-                hintText: 'Name',
+                hintText: appLocalizations.name,
                 controller: nameController,
                 onChanged: (value) {},
                 validator: (value) {
@@ -58,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 16,
               ),
               DefaultTextFormField(
-                hintText: 'Email',
+                hintText: appLocalizations.email,
                 controller: emailController,
                 onChanged: (value) {},
                 validator: (value) {
@@ -74,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 16,
               ),
               DefaultTextFormField(
-                hintText: 'Password',
+                hintText: appLocalizations.password,
                 controller: passwordController,
                 onChanged: (value) {},
                 validator: (value) {
@@ -91,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 32,
               ),
               DefaultElevatedButton(
-                text: 'Register',
+                text: appLocalizations.register,
                 onPressed: register,
               ),
               const SizedBox(
@@ -103,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       context, LoginScreen.routeName);
                 },
                 child: Text(
-                  "Login",
+                  appLocalizations.login,
                   style: textTheme.titleMedium?.copyWith(
                     color: AppTheme.primaryColor,
                   ),

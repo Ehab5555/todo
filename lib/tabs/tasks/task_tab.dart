@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
 import 'package:todo/auth/user_provider.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/tabs/settings/settings_provider.dart';
 import 'package:todo/tabs/tasks/task_item.dart';
 import 'package:todo/tabs/tasks/tasks_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,6 +23,7 @@ class _TaskTabState extends State<TaskTab> {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
     double screenHeight = MediaQuery.sizeOf(context).height;
     TextTheme textTheme = Theme.of(context).textTheme;
+    SettingsProvider settingsProvider = Provider.of<SettingsProvider>(context);
     final userId =
         Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     if (shouldGetTasks) {
@@ -69,7 +71,9 @@ class _TaskTabState extends State<TaskTab> {
                   width: 60,
                   activeDayStyle: DayStyle(
                     decoration: BoxDecoration(
-                      color: AppTheme.white,
+                      color: settingsProvider.isDark
+                          ? AppTheme.eerieBlack
+                          : AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     dayNumStyle: textTheme.titleMedium?.copyWith(
@@ -84,26 +88,24 @@ class _TaskTabState extends State<TaskTab> {
                   ),
                   inactiveDayStyle: DayStyle(
                     decoration: BoxDecoration(
-                      color: AppTheme.white,
+                      color: settingsProvider.isDark
+                          ? AppTheme.eerieBlack
+                          : AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     dayNumStyle: textTheme.titleMedium,
-                    dayStrStyle: const TextStyle(
-                      color: AppTheme.black,
-                    ),
                     monthStrStyle: const TextStyle(
                       color: AppTheme.black,
                     ),
                   ),
                   todayStyle: DayStyle(
                     decoration: BoxDecoration(
-                      color: AppTheme.white,
+                      color: settingsProvider.isDark
+                          ? AppTheme.eerieBlack
+                          : AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     dayNumStyle: textTheme.titleMedium,
-                    dayStrStyle: const TextStyle(
-                      color: AppTheme.black,
-                    ),
                     monthStrStyle: const TextStyle(
                       color: AppTheme.black,
                     ),
