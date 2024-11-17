@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/tasks/task_tab.dart';
+import 'package:todo/tabs/settings/settings_tab.dart';
+import 'package:todo/tabs/tasks/task_tab.dart';
 import 'package:todo/widgets/add_task_bottom_sheet.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,11 +14,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+  List<Widget> tabs = [
+    const TaskTab(),
+    const SettingsTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const TaskTab(),
+      body: tabs[currentIndex],
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
         notchMargin: 10,
@@ -46,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
+            isScrollControlled: true,
             builder: (_) => const AddTaskBottomSheet(),
           );
         },

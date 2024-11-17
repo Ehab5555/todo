@@ -3,16 +3,16 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/tasks/edit_task.dart';
-import 'package:todo/tasks/tasks_provider.dart';
+import 'package:todo/tabs/tasks/edit_task.dart';
+import 'package:todo/tabs/tasks/tasks_provider.dart';
 
 class TaskItem extends StatefulWidget {
-  TaskModel taskModel;
-  Color get color => taskModel.isDone ? AppTheme.green : AppTheme.primaryColor;
+  final TaskModel taskModel;
 
-  TaskItem({
+  const TaskItem({
     super.key,
     required this.taskModel,
   });
@@ -22,26 +22,32 @@ class TaskItem extends StatefulWidget {
 }
 
 class _TaskItemState extends State<TaskItem> {
+  Color get color =>
+      widget.taskModel.isDone ? AppTheme.green : AppTheme.primaryColor;
   @override
   Widget build(BuildContext context) {
+    final userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
     TextTheme textTheme = Theme.of(context).textTheme;
-    Provider.of<TasksProvider>(context).getTasks();
+    Provider.of<TasksProvider>(context).getTasks(userId);
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+      margin: const EdgeInsets.all(10),
       child: Slidable(
         startActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: [
             SlidableAction(
               borderRadius: BorderRadius.circular(15),
-              onPressed: (context) {
-                FirebaseFunctions.deleteTaskFromFireStore(widget.taskModel.id)
+              onPressed: (_) {
+                FirebaseFunctions.deleteTaskFromFireStore(
+                        widget.taskModel.id, userId)
                     .then(
                   (_) {
                     Provider.of<TasksProvider>(
+                      // ignore: use_build_context_synchronously
                       context,
                       listen: false,
-                    ).getTasks();
+                    ).getTasks(userId);
                   },
                 ).catchError(
                   (error) {
@@ -76,7 +82,7 @@ class _TaskItemState extends State<TaskItem> {
             title: Text(
               widget.taskModel.title,
               style: textTheme.titleLarge?.copyWith(
-                color: widget.color,
+                color: color,
               ),
             ),
             subtitle: Text(
@@ -86,7 +92,7 @@ class _TaskItemState extends State<TaskItem> {
             leading: Container(
               height: double.infinity,
               width: 4,
-              color: widget.color,
+              color: color,
             ),
             trailing: widget.taskModel.isDone
                 ? InkWell(
@@ -100,10 +106,11 @@ class _TaskItemState extends State<TaskItem> {
                             id: widget.taskModel.id,
                             isDone: false,
                           ),
+                          userId,
                         );
                         widget.taskModel.isDone = false;
                       });
-                      TasksProvider().getTasks();
+                      TasksProvider().getTasks(userId);
                     },
                     child: Text(
                       'Is Done',
@@ -127,11 +134,12 @@ class _TaskItemState extends State<TaskItem> {
                           id: widget.taskModel.id,
                           isDone: true,
                         ),
+                        userId,
                       );
                       setState(() {
                         widget.taskModel.isDone = true;
                       });
-                      TasksProvider().getTasks();
+                      TasksProvider().getTasks(userId);
                     },
                     child: const Icon(
                       Icons.done,

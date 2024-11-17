@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/firebase_functions.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/widgets/default_elevated_button.dart';
@@ -24,6 +26,8 @@ class _EditTaskState extends State<EditTask> {
     double screenHeight = MediaQuery.sizeOf(context).width;
     TextTheme textTheme = Theme.of(context).textTheme;
     TaskModel task = ModalRoute.of(context)!.settings.arguments as TaskModel;
+    final userId = Provider.of<UserProvider>(context).currentUser!.id;
+
     return Scaffold(
       body: Column(
         children: [
@@ -38,7 +42,7 @@ class _EditTaskState extends State<EditTask> {
                 top: screenHeight * 0.05,
                 start: screenHeight * 0.04,
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(20.0),
                   child: Row(
                     children: [
                       InkWell(
@@ -93,6 +97,12 @@ class _EditTaskState extends State<EditTask> {
                           onChanged: (value) {
                             task.title = value;
                           },
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Task Title is required';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(
                           height: 32,
@@ -104,6 +114,12 @@ class _EditTaskState extends State<EditTask> {
                           ),
                           onChanged: (value) {
                             task.description = value;
+                          },
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Task Description is required';
+                            }
+                            return null;
                           },
                           maxLines: 2,
                         ),
@@ -152,13 +168,14 @@ class _EditTaskState extends State<EditTask> {
                           text: 'Add Task',
                           onPressed: () {
                             FirebaseFunctions.updateTaskInFirestore(
-                                    taskModel: task)
-                                .then(
+                              taskModel: task,
+                              userId,
+                            ).then(
                               (_) {
                                 Fluttertoast.showToast(
                                   msg: "Task Updated successfully",
                                   toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
+                                  gravity: ToastGravity.BOTTOM,
                                   timeInSecForIosWeb: 5,
                                   backgroundColor: AppTheme.green,
                                   textColor: Colors.white,

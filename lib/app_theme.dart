@@ -56,6 +56,10 @@ class AppTheme {
         backgroundColor: primaryColor,
       ),
     ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+    ),
   );
   static ThemeData darkTheme = ThemeData(
     scaffoldBackgroundColor: darkBackgroundColor,
@@ -102,6 +106,10 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
       ),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
     ),
   );
 }

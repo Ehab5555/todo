@@ -2,17 +2,32 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/app_theme.dart';
+import 'package:todo/auth/user_provider.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/tasks/task_item.dart';
-import 'package:todo/tasks/tasks_provider.dart';
+import 'package:todo/tabs/tasks/task_item.dart';
+import 'package:todo/tabs/tasks/tasks_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class TaskTab extends StatelessWidget {
+class TaskTab extends StatefulWidget {
   const TaskTab({super.key});
 
+  @override
+  State<TaskTab> createState() => _TaskTabState();
+}
+
+class _TaskTabState extends State<TaskTab> {
+  bool shouldGetTasks = true;
   @override
   Widget build(BuildContext context) {
     TasksProvider tasksProvider = Provider.of<TasksProvider>(context);
     double screenHeight = MediaQuery.sizeOf(context).height;
+    TextTheme textTheme = Theme.of(context).textTheme;
+    final userId =
+        Provider.of<UserProvider>(context, listen: false).currentUser!.id;
+    if (shouldGetTasks) {
+      tasksProvider.getTasks(userId);
+      shouldGetTasks = false;
+    }
 
     return Column(
       children: [
@@ -28,10 +43,10 @@ class TaskTab extends StatelessWidget {
               top: screenHeight * 0.05,
               start: screenHeight * 0.04,
               child: Text(
-                'ToDo List',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.white,
-                    ),
+                AppLocalizations.of(context)!.todoList,
+                style: textTheme.titleLarge?.copyWith(
+                  color: AppTheme.white,
+                ),
               ),
             ),
             Padding(
@@ -57,10 +72,9 @@ class TaskTab extends StatelessWidget {
                       color: AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    dayNumStyle:
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: AppTheme.primaryColor,
-                            ),
+                    dayNumStyle: textTheme.titleMedium?.copyWith(
+                      color: AppTheme.primaryColor,
+                    ),
                     dayStrStyle: const TextStyle(
                       color: AppTheme.primaryColor,
                     ),
@@ -73,7 +87,7 @@ class TaskTab extends StatelessWidget {
                       color: AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    dayNumStyle: Theme.of(context).textTheme.titleMedium,
+                    dayNumStyle: textTheme.titleMedium,
                     dayStrStyle: const TextStyle(
                       color: AppTheme.black,
                     ),
@@ -83,10 +97,10 @@ class TaskTab extends StatelessWidget {
                   ),
                   todayStyle: DayStyle(
                     decoration: BoxDecoration(
-                      color: AppTheme.grey,
+                      color: AppTheme.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    dayNumStyle: Theme.of(context).textTheme.titleMedium,
+                    dayNumStyle: textTheme.titleMedium,
                     dayStrStyle: const TextStyle(
                       color: AppTheme.black,
                     ),
@@ -98,17 +112,20 @@ class TaskTab extends StatelessWidget {
                 ),
                 onDateChange: (selectedDate) {
                   tasksProvider.changeDateTime(selectedDate);
-                  tasksProvider.getTasks();
+                  tasksProvider.getTasks(userId);
                 },
               ),
             ),
           ],
         ),
         tasksProvider.tasks.isEmpty
-            ? const Expanded(
+            ? Expanded(
                 child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.primaryColor,
+                  child: Text(
+                    'You have no tasks',
+                    style: textTheme.titleLarge?.copyWith(
+                      color: AppTheme.grey,
+                    ),
                   ),
                 ),
               )
